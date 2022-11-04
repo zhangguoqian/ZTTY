@@ -41,13 +41,6 @@
    <item row="3" column="9" colspan="2">
     <widget class="QComboBox" name="cbBox_Stop"/>
    </item>
-   <item row="9" column="8">
-    <widget class="QCheckBox" name="ckBox_Rts">
-     <property name="text">
-      <string>RTS</string>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="9" colspan="2">
     <widget class="QComboBox" name="cbBox_Parity"/>
    </item>
@@ -64,9 +57,6 @@
       <string/>
      </property>
     </widget>
-   </item>
-   <item row="10" column="9">
-    <widget class="QSpinBox" name="spin_TimeLine"/>
    </item>
    <item row="13" column="5">
     <widget class="Line" name="line_2">
@@ -105,13 +95,6 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="9" colspan="2">
-    <widget class="QCheckBox" name="ckBox_AutoSave">
-     <property name="text">
-      <string>自动保存</string>
-     </property>
-    </widget>
-   </item>
    <item row="13" column="7">
     <widget class="Line" name="line_3">
      <property name="orientation">
@@ -130,13 +113,6 @@
     <widget class="QCheckBox" name="ckBox_TimeLine">
      <property name="text">
       <string>时间戳</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="10">
-    <widget class="QLabel" name="label_TimeLine">
-     <property name="text">
-      <string>ms</string>
      </property>
     </widget>
    </item>
@@ -252,6 +228,13 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="pBn_Save">
      <property name="text">
       <string>保存窗口</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="9">
+    <widget class="QCheckBox" name="ckBox_Rts">
+     <property name="text">
+      <string>RTS</string>
      </property>
     </widget>
    </item>

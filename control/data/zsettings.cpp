@@ -88,3 +88,23 @@ void ZSettings::setHexFormalSend(bool checked) {
     this->setValue("SEND_HEX",checked);
     this->endGroup();
 }
+
+int ZSettings::getCycleValue() const {
+    return this->value("SINGLE/CYCLE").toInt();
+}
+
+void ZSettings::setCycleValue(int value) {
+    this->beginGroup("SINGLE");
+    this->setValue("CYCLE",value);
+    this->endGroup();
+}
+
+bool ZSettings::getIsSendEnter() const {
+    return this->value("SINGLE/ENTER").toBool();
+}
+
+void ZSettings::setSendEnter(bool icChecked) {
+    this->beginGroup("SINGLE");
+    this->setValue("ENTER",icChecked);
+    this->endGroup();
+}

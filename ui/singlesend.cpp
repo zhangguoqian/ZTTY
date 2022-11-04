@@ -12,6 +12,14 @@
 SingleSend::SingleSend(QWidget *parent) :
         QWidget(parent), ui(new Ui::SingleSend),mpControl(ZControl::instance()) {
     ui->setupUi(this);
+
+    connect(ui->pBn_Clear,&QPushButton::clicked,[=](){
+        ui->tEdit_Send->clear();
+        emit signalClearSendInfo();
+    });
+
+    ui->spin_Cycle->setValue(mpControl->getMpSettings()->getCycleValue());
+    ui->ckBox_SendEnter->setChecked(mpControl->getMpSettings()->getIsSendEnter());
     ui->ckBox_HexSend->setChecked(mpControl->getMpSettings()->getHexFormalSend());
     m_CurrentArray = mpControl->getMpSettings()->getTextSend();
     switch(ui->ckBox_HexSend->checkState()){
@@ -19,7 +27,7 @@ SingleSend::SingleSend(QWidget *parent) :
             ui->tEdit_Send->setText(QString::fromLocal8Bit(m_CurrentArray));
             break;
         case Qt::Checked:
-            ui->tEdit_Send->setText(m_CurrentArray.toHex('%c '));
+            ui->tEdit_Send->setText(m_CurrentArray.toHex(' '));
             break;
     }
     connect(ui->tEdit_Send, SIGNAL(textChanged()),this,SLOT(slotTextSendChanged()));
@@ -31,6 +39,8 @@ SingleSend::SingleSend(QWidget *parent) :
 SingleSend::~SingleSend() {
     mpControl->getMpSettings()->setTextSend(m_CurrentArray);
     mpControl->getMpSettings()->setHexFormalSend(ui->ckBox_HexSend->isChecked());
+    mpControl->getMpSettings()->setSendEnter(ui->ckBox_SendEnter->isChecked());
+    mpControl->getMpSettings()->setCycleValue(ui->spin_Cycle->value());
     delete ui;
 }
 
@@ -42,6 +52,7 @@ void SingleSend::slotpBnSendClicked() {
         {
             return;
         }
+        ui->ckBox_SendEnter->isChecked()?m_CurrentArray.append('\n'):m_CurrentArray;
         emit signalSerialWrite(m_CurrentArray);
     }
 }
@@ -52,7 +63,7 @@ void SingleSend::slotHexSendStateChanged(int state) {
             ui->tEdit_Send->setText(QString::fromLocal8Bit(m_CurrentArray));
             break;
         case Qt::Checked:
-            ui->tEdit_Send->setText(m_CurrentArray.toHex('%c '));
+            ui->tEdit_Send->setText(m_CurrentArray.toHex(' '));
             break;
     }
 }

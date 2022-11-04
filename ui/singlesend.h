@@ -26,6 +26,7 @@ public:
     virtual ~SingleSend() override;
 signals:
     void signalSerialWrite(QByteArray array);
+    void signalClearSendInfo();
 private slots:
     //! 点击发送
     void slotpBnSendClicked();
@@ -33,9 +34,9 @@ private slots:
     void slotHexSendStateChanged(int state);
     //! 发送端文本改变
     void slotTextSendChanged();
-
     //! 循环发送
     void slotTimerSendStateChanged(int state);
+
 private:
     Ui::SingleSend *ui;
     ZControl *mpControl;

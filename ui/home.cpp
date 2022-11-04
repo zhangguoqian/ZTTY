@@ -5,8 +5,10 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_Home.h" resolved
 #include <QTime>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QComboBox>
 #include <QMetaEnum>
+#include <QtConcurrent/QtConcurrent>
 #include "home.h"
 #include "ui_Home.h"
 
@@ -19,6 +21,10 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
     mpSingleSend = new SingleSend();
     ui->tabWidget->addTab(mpSingleSend, tr("单条发送"));
     connect(mpSingleSend,SIGNAL(signalSerialWrite(QByteArray)),this,SLOT(slotSerialWrite(QByteArray)));
+    connect(mpSingleSend,&SingleSend::signalClearSendInfo,[=](){
+        this->m_SendNumber = 0;
+        ui->label_SendNumber->setText(tr("发送:%0").arg(m_SendNumber));
+    });
 
     mpMultipleSend = new MultipleSend();
     ui->tabWidget->addTab(mpMultipleSend, tr("多条发送"));
@@ -54,6 +60,27 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
     connect(mpZControl->getMpSerialPort(), SIGNAL(error(QSerialPort::SerialPortError)),this,SLOT(slotSerialError(QSerialPort::SerialPortError)));
     connect(mpZControl->getMpSerialPort(), SIGNAL(signalSerialPortListChange(const QStringList &, QString)),this,SLOT(slotSerialPortListChange(const QStringList &,QString)));
     connect(ui->pBn_TtySet,SIGNAL(clicked()),this,SLOT(slotPBnTtySetClicked()));
+    connect(ui->pBn_Clear,&QPushButton::clicked,[=](){
+        m_RecNumber = 0;
+        ui->label_RecNumber->setText(tr("接收:%0").arg(m_RecNumber));
+    });
+    connect(ui->pBn_Save,&QPushButton::clicked,[=](){
+        QString fileName = QFileDialog::getSaveFileName(this,tr("选择文件夹"),"./","文本(*.txt);;所有文件(*)");
+        if(fileName.isEmpty())
+        {
+            return ;
+        }
+        QtConcurrent::run([=](){
+            QFile file(fileName);
+            if(!file.open(QIODevice::WriteOnly))
+            {
+                QMessageBox::warning(this, tr("提示"),tr("文件保存失败。"));
+                return;
+            }
+            file.write(ui->tEdit_Rec->toPlainText().toLocal8Bit());
+            file.close();
+        });
+    });
 }
 
 Home::~Home() {
@@ -67,13 +94,6 @@ void Home::timerEvent(QTimerEvent *event) {
     QObject::timerEvent(event);
     QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
     ui->label_CurrentTime->setText(tr("当前时间 %0").arg(currentTimeStr));
-
-//    static int updateHz = 0;
-//    if(!mpZControl->getMpSerialPort()->isOpen()&&updateHz%2==0) {
-//        ui->cbBox_Tty->clear();
-//        ui->cbBox_Tty->addItems(mpZControl->getMpSerialPort()->getTtyList());
-//    }
-//    updateHz++;
 }
 
 void Home::slotPBnTtySetClicked() {

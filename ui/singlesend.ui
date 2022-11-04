@@ -110,22 +110,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pBn_Clear</sender>
-   <signal>clicked()</signal>
-   <receiver>tEdit_Send</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>911</x>
-     <y>75</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>752</x>
-     <y>72</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

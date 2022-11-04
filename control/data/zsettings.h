@@ -43,6 +43,14 @@ public:
     bool getHexFormalSend()const;
     //! 设置发送HEX
     void setHexFormalSend(bool checked);
+    //! 获取周期时间
+    int getCycleValue() const;
+    //! 设置周期时间
+    void setCycleValue(int value);
+    //! 获取是否发送新行
+    bool getIsSendEnter() const;
+    //! 设置是否发送新行
+    void setSendEnter(bool icChecked);
 
     virtual ~ZSettings();
 };
