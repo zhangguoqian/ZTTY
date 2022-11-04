@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SingleSend</class>
+ <widget class="QWidget" name="SingleSend">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>967</width>
+    <height>174</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SingleSend</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" rowspan="2" colspan="7">
+    <widget class="QTextEdit" name="tEdit_Send"/>
+   </item>
+   <item row="0" column="7">
+    <widget class="QPushButton" name="pBn_Send">
+     <property name="text">
+      <string>发送</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="7">
+    <widget class="QPushButton" name="pBn_Clear">
+     <property name="text">
+      <string>清除发送</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="ckBox_Timer">
+     <property name="text">
+      <string>定时发送</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="label_Cycle">
+     <property name="text">
+      <string>周期</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QSpinBox" name="spin_Cycle">
+     <property name="maximum">
+      <number>1000000</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLabel" name="label_UnitMs">
+     <property name="text">
+      <string>ms</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <widget class="QLineEdit" name="lineEdit_FileName"/>
+   </item>
+   <item row="2" column="5">
+    <widget class="QPushButton" name="pBn_OpenFile">
+     <property name="text">
+      <string>打开文件</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="6">
+    <widget class="QPushButton" name="pBn_SendFile">
+     <property name="text">
+      <string>发送文件</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="7">
+    <widget class="QPushButton" name="pBn_StopSendFile">
+     <property name="text">
+      <string>停止发送</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="ckBox_HexSend">
+     <property name="text">
+      <string>16进制发送</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3">
+    <widget class="QCheckBox" name="ckBox_SendEnter">
+     <property name="text">
+      <string>发送新行</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QProgressBar" name="progressBar">
+     <property name="value">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pBn_Clear</sender>
+   <signal>clicked()</signal>
+   <receiver>tEdit_Send</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>911</x>
+     <y>75</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>752</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Home</class>
+ <widget class="QWidget" name="Home">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>998</width>
+    <height>797</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ZTTY</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="9" colspan="2">
+    <widget class="QComboBox" name="cbBox_Baud"/>
+   </item>
+   <item row="8" column="8">
+    <widget class="QCheckBox" name="ckBox_HexShow">
+     <property name="text">
+      <string>16进制显示</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="8">
+    <widget class="QLabel" name="label_Baud">
+     <property name="text">
+      <string>波特率</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="8">
+    <widget class="QLabel" name="label_Data">
+     <property name="text">
+      <string>数据位</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="9" colspan="2">
+    <widget class="QComboBox" name="cbBox_Stop"/>
+   </item>
+   <item row="9" column="8">
+    <widget class="QCheckBox" name="ckBox_Rts">
+     <property name="text">
+      <string>RTS</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="9" colspan="2">
+    <widget class="QComboBox" name="cbBox_Parity"/>
+   </item>
+   <item row="6" column="9" colspan="2">
+    <widget class="QPushButton" name="pBn_TtySet">
+     <property name="text">
+      <string>打开串口</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="8" colspan="3">
+    <widget class="QLabel" name="label_CurrentTime">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="9">
+    <widget class="QSpinBox" name="spin_TimeLine"/>
+   </item>
+   <item row="13" column="5">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="8" colspan="2">
+    <widget class="QLabel" name="label_Tty">
+     <property name="text">
+      <string>串口选择</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="9" colspan="2">
+    <widget class="QComboBox" name="cbBox_Data"/>
+   </item>
+   <item row="6" column="8">
+    <widget class="QLabel" name="label_TtySet">
+     <property name="text">
+      <string>串口操作</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="2">
+    <widget class="QLabel" name="label_6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="9" colspan="2">
+    <widget class="QCheckBox" name="ckBox_AutoSave">
+     <property name="text">
+      <string>自动保存</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="7">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QPushButton" name="pBn_Set">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="8">
+    <widget class="QCheckBox" name="ckBox_TimeLine">
+     <property name="text">
+      <string>时间戳</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="10">
+    <widget class="QLabel" name="label_TimeLine">
+     <property name="text">
+      <string>ms</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="8">
+    <widget class="QLabel" name="label_Parity">
+     <property name="text">
+      <string>校验位</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="8" colspan="3">
+    <widget class="QComboBox" name="cbBox_Tty"/>
+   </item>
+   <item row="3" column="8">
+    <widget class="QLabel" name="label_Stop">
+     <property name="text">
+      <string>停止位</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="9" colspan="2">
+    <widget class="QCheckBox" name="ckBox_Dtr">
+     <property name="text">
+      <string>DTR</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="11">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="12" colspan="7">
+    <widget class="QTextEdit" name="tEdit_Rec">
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="4">
+    <widget class="QLabel" name="label_SendNumber">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>发送:0</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="6">
+    <widget class="QLabel" name="label_RecNumber">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>接收:0</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="8" colspan="3">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="7" column="9" colspan="2">
+    <widget class="QPushButton" name="pBn_Clear">
+     <property name="text">
+      <string>清除接收</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="8">
+    <widget class="QPushButton" name="pBn_Save">
+     <property name="text">
+      <string>保存窗口</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pBn_Clear</sender>
+   <signal>clicked()</signal>
+   <receiver>tEdit_Rec</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>960</x>
+     <y>217</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>597</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
