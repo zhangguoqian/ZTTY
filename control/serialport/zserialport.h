@@ -14,8 +14,11 @@ QT_END_NAMESPACE
 
 class ZSerialPort : public QSerialPort {
 Q_OBJECT
+protected:
+    void timerEvent(QTimerEvent *event) override;
 
 public:
+
     explicit ZSerialPort(QObject *parent = nullptr);
 
     ~ZSerialPort() override;
@@ -33,9 +36,10 @@ public:
     //! 打开串口,返回串口是否打开成功，成功true，否则为false
     bool openTty(const QString &tty,int baud,QString stopBit,
                  QString dataBit,QString parityBit);
-
+signals:
+    void signalSerialPortListChange(const QStringList &list,QString currentPortName);
 private:
-
+    int m_TimerIdSerialPort;
 };
 
 

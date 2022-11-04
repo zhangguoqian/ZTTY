@@ -69,12 +69,22 @@ void ZSettings::setTimeLineState(int isChecked) {
     this->endGroup();
 }
 
-QString ZSettings::getTextSend() const {
-    return this->value("SHOW/SEND_TEXT").toString();
+QByteArray ZSettings::getTextSend() const {
+    return this->value("SHOW/SEND_TEXT").toByteArray();
 }
 
-void ZSettings::setTextSend(const QString &text) {
+void ZSettings::setTextSend(const QByteArray &text) {
     this->beginGroup("SHOW");
     this->setValue("SEND_TEXT",text);
+    this->endGroup();
+}
+
+bool ZSettings::getHexFormalSend() const {
+    return this->value("SHOW/SEND_HEX").toBool();
+}
+
+void ZSettings::setHexFormalSend(bool checked) {
+    this->beginGroup("SHOW");
+    this->setValue("SEND_HEX",checked);
     this->endGroup();
 }

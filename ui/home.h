@@ -10,6 +10,7 @@
 #include "multiplesend.h"
 #include "../control/zcontrol.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Home; }
 QT_END_NAMESPACE
@@ -42,6 +43,9 @@ private slots:
     void slotSerialWrite(QByteArray);
     //! 串口发生错误操作
     void slotSerialError(QSerialPort::SerialPortError error);
+    //! 循环获取串口列表
+    void slotSerialPortListChange(const QStringList &list,QString currentTtyName);
+
 private:
     Ui::Home *ui;
     int m_TimerId; //定时器ID，用来显示当前时间的定时器ID，每秒触发一次
@@ -49,6 +53,9 @@ private:
     SingleSend *mpSingleSend;
     MultipleSend *mpMultipleSend;
     ZControl *mpZControl;
+
+    uint64_t m_SendNumber;
+    uint64_t m_RecNumber;
 };
 
 

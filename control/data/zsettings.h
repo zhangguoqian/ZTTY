@@ -35,9 +35,14 @@ public:
     void setTimeLineState(int isChecked);
     //! 获取时间轴显示从settings
     int getTimeLineState() const;
-
-    QString getTextSend()const;
-    void setTextSend(const QString &text);
+    //! 获取发送信息
+    QByteArray getTextSend()const;
+    //! 设置发送信息
+    void setTextSend(const QByteArray &text);
+    //! 获取发送HEX
+    bool getHexFormalSend()const;
+    //! 设置发送HEX
+    void setHexFormalSend(bool checked);
 
     virtual ~ZSettings();
 };

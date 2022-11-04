@@ -11,7 +11,7 @@
 #include "ui_Home.h"
 
 
-Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZControl::instance()) {
+Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZControl::instance()),m_SendNumber(0),m_RecNumber(0) {
     ui->setupUi(this);
 
     m_TimerId = startTimer(1000);
@@ -52,6 +52,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
 
     connect(mpZControl->getMpSerialPort(), SIGNAL(readyRead()),this,SLOT(slotSerialRead()));
     connect(mpZControl->getMpSerialPort(), SIGNAL(error(QSerialPort::SerialPortError)),this,SLOT(slotSerialError(QSerialPort::SerialPortError)));
+    connect(mpZControl->getMpSerialPort(), SIGNAL(signalSerialPortListChange(const QStringList &, QString)),this,SLOT(slotSerialPortListChange(const QStringList &,QString)));
     connect(ui->pBn_TtySet,SIGNAL(clicked()),this,SLOT(slotPBnTtySetClicked()));
 }
 
@@ -67,10 +68,12 @@ void Home::timerEvent(QTimerEvent *event) {
     QString currentTimeStr = QTime::currentTime().toString("hh:mm:ss");
     ui->label_CurrentTime->setText(tr("当前时间 %0").arg(currentTimeStr));
 
-    if(!mpZControl->getMpSerialPort()->isOpen()) {
-        ui->cbBox_Tty->clear();
-        ui->cbBox_Tty->addItems(mpZControl->getMpSerialPort()->getTtyList());
-    }
+//    static int updateHz = 0;
+//    if(!mpZControl->getMpSerialPort()->isOpen()&&updateHz%2==0) {
+//        ui->cbBox_Tty->clear();
+//        ui->cbBox_Tty->addItems(mpZControl->getMpSerialPort()->getTtyList());
+//    }
+//    updateHz++;
 }
 
 void Home::slotPBnTtySetClicked() {
@@ -92,16 +95,10 @@ void Home::slotPBnTtySetClicked() {
 }
 
 void Home::slotTtyNameTextChanged(const QString &ttyName) {
-    mpZControl->getMpSerialPort()->setPortName(ttyName);
-    if(mpZControl->getMpSerialPort()->isOpen()) {
+    if(mpZControl->getMpSerialPort()->isOpen()&&mpZControl->getMpSerialPort()->error()==QSerialPort::NoError) {
         mpZControl->getMpSerialPort()->close();
-        bool info = mpZControl->getMpSerialPort()->open(QIODevice::ReadWrite);
-        if(!info){
-            mpZControl->getMpSerialPort()->close();
-            ui->pBn_TtySet->setText(tr("打开串口"));
-            QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
-            //return;
-        }
+        ui->pBn_TtySet->setText(tr("打开串口"));
+        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
     }
     qDebug()<<"串口名:" << ttyName;
 }
@@ -112,9 +109,6 @@ void Home::slotBaudTextChanged(const QString &text) {
 
     bool info = mpZControl->getMpSerialPort()->setBaudRate(text.toInt());
     if(!info){
-        mpZControl->getMpSerialPort()->close();
-        ui->pBn_TtySet->setText(tr("打开串口"));
-        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
         //return;
     }
     qDebug()<<"波特率:" << text;
@@ -128,9 +122,6 @@ void Home::slotStopTextChanged(const QString &text) {
     int value = metaEnum.keyToValue(text.toStdString().c_str());
     bool info = mpZControl->getMpSerialPort()->setStopBits(static_cast<QSerialPort::StopBits>(value));
     if(!info){
-        mpZControl->getMpSerialPort()->close();
-        ui->pBn_TtySet->setText(tr("打开串口"));
-        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
         //return;
     }
     qDebug()<<"停止位:" << static_cast<QSerialPort::StopBits>(value);
@@ -144,9 +135,6 @@ void Home::slotParityTextChanged(const QString &text) {
     int value = metaEnum.keyToValue(text.toStdString().c_str());
     bool info = mpZControl->getMpSerialPort()->setParity(static_cast<QSerialPort::Parity>(value));
     if(!info){
-        mpZControl->getMpSerialPort()->close();
-        ui->pBn_TtySet->setText(tr("打开串口"));
-        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
         //return;
     }
     qDebug()<<"校验位:" << static_cast<QSerialPort::Parity>(value);
@@ -160,9 +148,7 @@ void Home::slotDataTextChanged(const QString &text) {
     int value = metaEnum.keyToValue(text.toStdString().c_str());
     bool info = mpZControl->getMpSerialPort()->setDataBits(static_cast<QSerialPort::DataBits>(value));
     if(!info){
-        mpZControl->getMpSerialPort()->close();
-        ui->pBn_TtySet->setText(tr("打开串口"));
-        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作。"));
+
         //return;
     }
     qDebug()<<"数据位:" << static_cast<QSerialPort::DataBits>(value);
@@ -176,7 +162,10 @@ void Home::slotSerialRead() {
     {
         byteArray+=QDateTime::currentDateTime().toString("[yyyy/MM/dd hh:mm:ss.zzz]\nRX:").toLocal8Bit();
     }
-    byteArray += pSerialPort->readAll();
+    QByteArray recArray = pSerialPort->readAll();
+    byteArray += recArray;
+    m_RecNumber+=recArray.size();
+    ui->label_RecNumber->setText(tr("接收:%0").arg(m_RecNumber));
     ui->tEdit_Rec->append(QString::fromLocal8Bit(byteArray.trimmed()));
 }
 
@@ -188,13 +177,27 @@ void Home::slotSerialWrite(QByteArray array) {
         byteArray.append(QDateTime::currentDateTime().toString("[yyyy/MM/dd hh:mm:ss.zzz]\nRX:").toLocal8Bit());
     }
     byteArray+=array;
-    mpZControl->getMpSerialPort()->write(byteArray);
+    qint64 size = mpZControl->getMpSerialPort()->write(array);
+    m_SendNumber+=size ;
+    ui->label_SendNumber->setText(tr("发送:%0").arg(m_SendNumber));
     ui->tEdit_Rec->append(QString::fromLocal8Bit(byteArray.trimmed()));
 }
 
 void Home::slotSerialError(QSerialPort::SerialPortError error) {
+
+    if(error!=QSerialPort::NoError)
+    {
+        mpZControl->getMpSerialPort()->close();
+        ui->pBn_TtySet->setText(tr("打开串口"));
+        QMetaEnum metaEnum = QMetaEnum::fromType<QSerialPort::SerialPortError>();
+        QString errorStr = metaEnum.valueToKey(error);
+        QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作,错误信息%0。").arg( errorStr));
+    }
     qDebug()<<"串口错误信息:" << error;
-    //    QMetaEnum metaEnum = QMetaEnum::fromType<QSerialPort::SerialPortError>();
-    //    QString errorStr = metaEnum.valueToKey(error);
-    //    QMessageBox::warning(this,tr("提示"),tr("串口设置失败，不支持的错误操作,错误信息%0。").arg( errorStr));
+}
+
+void Home::slotSerialPortListChange(const QStringList &list,QString currentTtyName) {
+    ui->cbBox_Tty->clear();
+    ui->cbBox_Tty->addItems(list);
+    ui->cbBox_Tty->setCurrentText(currentTtyName);
 }

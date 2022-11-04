@@ -9,7 +9,7 @@
 
 ZSerialPort::ZSerialPort(QObject *parent) :
         QSerialPort(parent) {
-
+    m_TimerIdSerialPort = startTimer(1500);
 }
 
 ZSerialPort::~ZSerialPort() {
@@ -23,6 +23,7 @@ QStringList ZSerialPort::getTtyList() const {
         if(!var.isBusy())
         {
             list.append(var.portName());
+            //list.append(var.portName()+":"+var.description());
         }
     }
     return list;
@@ -37,7 +38,6 @@ QStringList ZSerialPort::getBaudList() const {
         {
             list += QString::number(metaEnum.value(i));
         }
-
         // Or list += metaEnum.key(i);
     }
     return list;
@@ -83,7 +83,7 @@ QStringList ZSerialPort::getDataList() const {
 }
 
 bool ZSerialPort::openTty(const QString &tty, int baud,
-                       QString stopBit, QString dataBit,QString parityBit) {
+                          QString stopBit, QString dataBit,QString parityBit) {
     this->setPortName(tty);
     this->setBaudRate(baud);
     QMetaEnum metaEnum = QMetaEnum::fromType<QSerialPort::StopBits>();
@@ -96,4 +96,19 @@ bool ZSerialPort::openTty(const QString &tty, int baud,
     this->setParity(static_cast<Parity>(metaEnum.keyToValue(parityBit.toStdString().c_str())));
 
     return open(QIODevice::ReadWrite);
+}
+
+void ZSerialPort::timerEvent(QTimerEvent *event) {
+    QObject::timerEvent(event);
+    static QStringList list = this->getTtyList();
+    if(this->isOpen()&&this->error()==SerialPortError::NoError){
+
+    }else{
+        QStringList listTemp = this->getTtyList();
+        QString currentTty = this->portName();
+        if (list != listTemp) {
+            list = listTemp;
+            emit signalSerialPortListChange(list, currentTty);
+        }
+    }
 }
