@@ -15,13 +15,16 @@ find_package(Qt5 COMPONENTS
         SerialPort
         REQUIRED)
 
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+
 add_executable(ZTTY main.cpp
         ui/singlesend.cpp ui/singlesend.h ui/singlesend.ui
         ui/multiplesend.cpp ui/multiplesend.h ui/multiplesend.ui
         control/serialport/zserialport.cpp control/serialport/zserialport.h
         control/zcontrol.cpp control/zcontrol.h
         control/data/zsettings.cpp control/data/zsettings.h
-        ui/home.cpp ui/home.h ui/home.ui )
+        ui/home.cpp ui/home.h ui/home.ui)
+
 target_link_libraries(ZTTY
         Qt5::Core
         Qt5::Gui

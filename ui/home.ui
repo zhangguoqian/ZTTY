@@ -140,13 +140,6 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="9" colspan="2">
-    <widget class="QCheckBox" name="ckBox_Dtr">
-     <property name="text">
-      <string>DTR</string>
-     </property>
-    </widget>
-   </item>
    <item row="12" column="0" colspan="11">
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
@@ -228,13 +221,6 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="pBn_Save">
      <property name="text">
       <string>保存窗口</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="9">
-    <widget class="QCheckBox" name="ckBox_Rts">
-     <property name="text">
-      <string>RTS</string>
      </property>
     </widget>
    </item>

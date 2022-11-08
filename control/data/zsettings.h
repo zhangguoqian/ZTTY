@@ -40,9 +40,13 @@ public:
     //! 设置发送信息
     void setTextSend(const QByteArray &text);
     //! 获取发送HEX
-    bool getHexFormalSend()const;
+    bool getHexFormalSingleSend()const;
     //! 设置发送HEX
-    void setHexFormalSend(bool checked);
+    void setHexFormalSingleSend(bool checked);
+    //! 获取接收HEX
+    bool getHexFormalRec()const;
+    //! 设置接收HEX
+    void setHexFormalRec(bool checked);
     //! 获取周期时间
     int getCycleValue() const;
     //! 设置周期时间
@@ -51,7 +55,15 @@ public:
     bool getIsSendEnter() const;
     //! 设置是否发送新行
     void setSendEnter(bool icChecked);
-
+    //! 获取是否开启DTR功能
+    bool getDtr() const;
+    //! 设置DTR功能开关
+    void setDtr(bool icChecked);
+    //! 获取是否开启Rts功能
+    bool getRts() const;
+    //! 设置Rts功能开关
+    void setRts(bool icChecked);
+    //! 析构函数
     virtual ~ZSettings();
 };
 

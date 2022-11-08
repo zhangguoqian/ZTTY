@@ -20,7 +20,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
 
     mpSingleSend = new SingleSend();
     ui->tabWidget->addTab(mpSingleSend, tr("单条发送"));
-    connect(mpSingleSend,SIGNAL(signalSerialWrite(QByteArray)),this,SLOT(slotSerialWrite(QByteArray)));
+    connect(mpSingleSend,SIGNAL(signalSerialWrite(QByteArray,bool,bool)),this,SLOT(slotSerialWrite(QByteArray, bool,bool)));
     connect(mpSingleSend,&SingleSend::signalClearSendInfo,[=](){
         this->m_SendNumber = 0;
         ui->label_SendNumber->setText(tr("发送:%0").arg(m_SendNumber));
@@ -81,9 +81,12 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
             file.close();
         });
     });
+    ui->ckBox_HexShow->setChecked(mpZControl->getMpSettings()->getHexFormalRec());
+    connect(ui->ckBox_HexShow,SIGNAL(stateChanged(int)),this, SLOT(slotHexShowStateChanged(int)));
 }
 
 Home::~Home() {
+    mpZControl->getMpSettings()->setHexFormalRec(ui->ckBox_HexShow->isChecked());
     killTimer(m_TimerId);
     delete mpSingleSend;
     delete mpMultipleSend;
@@ -182,25 +185,46 @@ void Home::slotSerialRead() {
     {
         byteArray+=QDateTime::currentDateTime().toString("[yyyy/MM/dd hh:mm:ss.zzz]\nRX:").toLocal8Bit();
     }
+
     QByteArray recArray = pSerialPort->readAll();
-    byteArray += recArray;
+    QString str;
+    switch (ui->ckBox_HexShow->checkState()) {
+        case Qt::Unchecked:
+            str = QString::fromLocal8Bit(recArray.trimmed());
+            break;
+        case Qt::Checked:
+            str = QString::fromLocal8Bit(recArray.toHex(' '));
+            break;
+    }
+    str = QString::fromLocal8Bit(byteArray)+str;
     m_RecNumber+=recArray.size();
     ui->label_RecNumber->setText(tr("接收:%0").arg(m_RecNumber));
-    ui->tEdit_Rec->append(QString::fromLocal8Bit(byteArray.trimmed()));
+    ui->tEdit_Rec->append(str);
 }
 
-void Home::slotSerialWrite(QByteArray array) {
+void Home::slotSerialWrite(QByteArray array,bool isHex,bool isEnter) {
     QByteArray byteArray;
     ui->tEdit_Rec->setTextColor(QColor(Qt::green));
     if(ui->ckBox_TimeLine->isChecked())
     {
         byteArray.append(QDateTime::currentDateTime().toString("[yyyy/MM/dd hh:mm:ss.zzz]\nRX:").toLocal8Bit());
     }
-    byteArray+=array;
+    if(isEnter){
+        array.append("\r\n");
+    }
+    QString str;
+    if(!isHex){
+        str = QString::fromLocal8Bit(array.trimmed());
+    }else{
+        str = QString::fromLocal8Bit(array.toHex(' '));
+    }
+
+
+    str = QString::fromLocal8Bit(byteArray)+str;
     qint64 size = mpZControl->getMpSerialPort()->write(array);
     m_SendNumber+=size ;
     ui->label_SendNumber->setText(tr("发送:%0").arg(m_SendNumber));
-    ui->tEdit_Rec->append(QString::fromLocal8Bit(byteArray.trimmed()));
+    ui->tEdit_Rec->append(str);
 }
 
 void Home::slotSerialError(QSerialPort::SerialPortError error) {
@@ -221,3 +245,15 @@ void Home::slotSerialPortListChange(const QStringList &list,QString currentTtyNa
     ui->cbBox_Tty->addItems(list);
     ui->cbBox_Tty->setCurrentText(currentTtyName);
 }
+
+void Home::slotHexShowStateChanged(int state) {
+    switch (state) {
+        case Qt::Unchecked:
+
+            break;
+        case Qt::Checked:
+
+            break;
+    }
+}
+

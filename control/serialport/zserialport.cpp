@@ -5,11 +5,14 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_ZSerialPort.h" resolved
 
 #include <QMetaEnum>
+#include <QDebug>
 #include "zserialport.h"
 
 ZSerialPort::ZSerialPort(QObject *parent) :
         QSerialPort(parent) {
     m_TimerIdSerialPort = startTimer(1500);
+//    qDebug()<<this->readBufferSize();
+    this->setReadBufferSize(256);
 }
 
 ZSerialPort::~ZSerialPort() {

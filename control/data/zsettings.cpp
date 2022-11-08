@@ -79,18 +79,20 @@ void ZSettings::setTextSend(const QByteArray &text) {
     this->endGroup();
 }
 
-bool ZSettings::getHexFormalSend() const {
-    return this->value("SHOW/SEND_HEX").toBool();
+bool ZSettings::getHexFormalSingleSend() const {
+    return this->value("SHOW/SIGNAL_HEX").toBool();
 }
 
-void ZSettings::setHexFormalSend(bool checked) {
+void ZSettings::setHexFormalSingleSend(bool checked) {
     this->beginGroup("SHOW");
-    this->setValue("SEND_HEX",checked);
+    this->setValue("SIGNAL_HEX",checked);
     this->endGroup();
 }
 
 int ZSettings::getCycleValue() const {
-    return this->value("SINGLE/CYCLE").toInt();
+    int cycle =  this->value("SINGLE/CYCLE").toInt();
+    cycle=(0==cycle?1000:cycle);
+    return cycle;
 }
 
 void ZSettings::setCycleValue(int value) {
@@ -106,5 +108,35 @@ bool ZSettings::getIsSendEnter() const {
 void ZSettings::setSendEnter(bool icChecked) {
     this->beginGroup("SINGLE");
     this->setValue("ENTER",icChecked);
+    this->endGroup();
+}
+
+bool ZSettings::getDtr() const {
+    return this->value("SHOW/DTR").toBool();
+}
+
+void ZSettings::setDtr(bool icChecked) {
+    this->beginGroup("SHOW");
+    this->setValue("DTR",icChecked);
+    this->endGroup();
+}
+
+bool ZSettings::getRts() const {
+    return this->value("SHOW/RTS").toBool();
+}
+
+void ZSettings::setRts(bool icChecked) {
+    this->beginGroup("SHOW");
+    this->setValue("RTS",icChecked);
+    this->endGroup();
+}
+
+bool ZSettings::getHexFormalRec() const {
+    return this->value("SHOW/REC_HEX").toBool();
+}
+
+void ZSettings::setHexFormalRec(bool checked) {
+    this->beginGroup("SHOW");
+    this->setValue("REC_HEX",checked);
     this->endGroup();
 }

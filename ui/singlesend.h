@@ -8,6 +8,8 @@
 #include <QWidget>
 #include "../control/zcontrol.h"
 
+//class QWidget;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class SingleSend; }
 QT_END_NAMESPACE
@@ -25,7 +27,9 @@ public:
 
     virtual ~SingleSend() override;
 signals:
-    void signalSerialWrite(QByteArray array);
+    //! 发送数据
+    void signalSerialWrite(QByteArray array,bool isHex,bool isEnter);
+    //! 清理发送
     void signalClearSendInfo();
 private slots:
     //! 点击发送
@@ -41,7 +45,9 @@ private:
     Ui::SingleSend *ui;
     ZControl *mpControl;
     QByteArray m_CurrentArray;
+    QByteArray m_FileArray;
     int m_TimerCycleSend;
+
 };
 
 

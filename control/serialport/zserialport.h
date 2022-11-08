@@ -18,7 +18,6 @@ protected:
     void timerEvent(QTimerEvent *event) override;
 
 public:
-
     explicit ZSerialPort(QObject *parent = nullptr);
 
     ~ZSerialPort() override;
@@ -37,6 +36,7 @@ public:
     bool openTty(const QString &tty,int baud,QString stopBit,
                  QString dataBit,QString parityBit);
 signals:
+    //! 串口列表信息和当前串口名
     void signalSerialPortListChange(const QStringList &list,QString currentPortName);
 private:
     int m_TimerIdSerialPort;
