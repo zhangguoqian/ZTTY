@@ -140,3 +140,29 @@ void ZSettings::setHexFormalRec(bool checked) {
     this->setValue("REC_HEX",checked);
     this->endGroup();
 }
+
+int ZSettings::getSumPage() const {
+    int index = this->value("MULTIPLE/PAGE").toInt();
+    if(index==0)
+    {
+        index = 1;
+    }
+    return index;
+}
+
+void ZSettings::setSumPage(int index) {
+    this->beginGroup("MULTIPLE");
+    this->setValue("PAGE",index);
+    this->endGroup();
+}
+
+int ZSettings::getCurrentPage() const {
+    int index = this->value("MULTIPLE/CURRENT").toInt();
+    return index;
+}
+
+void ZSettings::setCurrentPage(int index) {
+    this->beginGroup("MULTIPLE");
+    this->setValue("CURRENT",index);
+    this->endGroup();
+}

@@ -63,6 +63,14 @@ public:
     bool getRts() const;
     //! 设置Rts功能开关
     void setRts(bool icChecked);
+    //! 获取多条发送有多少页
+    int getSumPage() const;
+    //! 设置多条发送有多少页
+    void setSumPage(int index);
+    //! 获取多条发送有多少页
+    int getCurrentPage() const;
+    //! 设置多条发送有多少页
+    void setCurrentPage(int index);
     //! 析构函数
     virtual ~ZSettings();
 };

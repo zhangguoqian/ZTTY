@@ -47,7 +47,7 @@ private:
     QByteArray m_CurrentArray;
     QByteArray m_FileArray;
     int m_TimerCycleSend;
-
+    bool m_IsSendFile;
 };
 
 

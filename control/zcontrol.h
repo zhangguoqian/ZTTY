@@ -9,6 +9,7 @@
 #include <QDebug>
 #include "serialport/zserialport.h"
 #include "data/zsettings.h"
+#include "data/zpagedata.h"
 
 class ZControl : public QObject{
     Q_OBJECT
@@ -19,6 +20,10 @@ private:
     ZControl();
     ZSerialPort *mpSerialPort;
     ZSettings *mpSettings;
+    ZPageData *mpPageData;
+public:
+    ZPageData *getMpPageData() const;
+
 public:
     ZSettings *getMpSettings() const;
 

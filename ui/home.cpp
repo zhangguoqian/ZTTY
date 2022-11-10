@@ -13,7 +13,12 @@
 #include "ui_Home.h"
 
 
-Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZControl::instance()),m_SendNumber(0),m_RecNumber(0) {
+Home::Home(QWidget *parent) : QWidget(parent),
+                              ui(new Ui::Home),
+                              mpZControl(ZControl::instance()),
+                              m_SendNumber(0),
+                              m_RecNumber(0),
+                              mpRubberBand(new QRubberBand(QRubberBand::Rectangle, this)){
     ui->setupUi(this);
 
     m_TimerId = startTimer(1000);
@@ -28,6 +33,7 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
 
     mpMultipleSend = new MultipleSend();
     ui->tabWidget->addTab(mpMultipleSend, tr("多条发送"));
+    //connect(mpMultipleSend,SIGNAL(signalSerialWrite(QByteArray,bool,bool)),this,SLOT(slotSerialWrite(QByteArray, bool,bool)));
 
     ui->cbBox_Tty->addItems(mpZControl->getMpSerialPort()->getTtyList());
     connect(ui->cbBox_Tty, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotTtyNameTextChanged(const QString &)));
@@ -83,6 +89,8 @@ Home::Home(QWidget *parent) : QWidget(parent), ui(new Ui::Home),mpZControl(ZCont
     });
     ui->ckBox_HexShow->setChecked(mpZControl->getMpSettings()->getHexFormalRec());
     connect(ui->ckBox_HexShow,SIGNAL(stateChanged(int)),this, SLOT(slotHexShowStateChanged(int)));
+
+
 }
 
 Home::~Home() {
@@ -100,15 +108,17 @@ void Home::timerEvent(QTimerEvent *event) {
 }
 
 void Home::slotPBnTtySetClicked() {
+
     if(mpZControl->getMpSerialPort()->isOpen()){
-        mpZControl->getMpSerialPort()->close();
         ui->pBn_TtySet->setText(tr("打开串口"));
+        qDebug()<<mpZControl->getMpSerialPort()->isBreakEnabled();
         return;
     }
 
     bool info = mpZControl->getMpSerialPort()->openTty(ui->cbBox_Tty->currentText(),ui->cbBox_Baud->currentText().toInt(),
                                                        ui->cbBox_Stop->currentText(),ui->cbBox_Data->currentText(),ui->cbBox_Parity->currentText());
 
+//    mpZControl->getMpSerialPort()->setBreakEnabled(true);
     if(!info){
         QMessageBox::warning(this,tr("提示"),tr("串口打开失败。"));
     }else{
@@ -257,3 +267,21 @@ void Home::slotHexShowStateChanged(int state) {
     }
 }
 
+void Home::mousePressEvent(QMouseEvent *event) {
+    m_Start = event->pos();
+    mpRubberBand->setGeometry(QRect(m_Start, QSize()));
+    mpRubberBand->show();
+    QWidget::mousePressEvent(event);
+}
+
+void Home::mouseReleaseEvent(QMouseEvent *event) {
+    if(mpRubberBand)
+        mpRubberBand->hide();
+    QWidget::mouseReleaseEvent(event);
+}
+
+void Home::mouseMoveEvent(QMouseEvent *event) {
+    if(mpRubberBand)
+        mpRubberBand->setGeometry(QRect(m_Start, event->pos()).normalized());
+    QWidget::mouseMoveEvent(event);
+}

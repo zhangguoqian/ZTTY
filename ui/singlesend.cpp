@@ -17,6 +17,8 @@ SingleSend::SingleSend(QWidget *parent) :
 
     connect(ui->pBn_Clear,&QPushButton::clicked,[=](){
         ui->tEdit_Send->clear();
+        ui->progressBar->setValue(0);
+        ui->lineEdit_FileName->clear();
         emit signalClearSendInfo();
     });
 
@@ -46,21 +48,52 @@ SingleSend::SingleSend(QWidget *parent) :
 
     });
     connect(ui->pBn_SendFile,&QPushButton::clicked,[=](){
+        if(!mpControl->getMpSerialPort()->isOpen()||mpControl->getMpSerialPort()->error()!=QSerialPort::SerialPortError::NoError)
+        {
+            QMessageBox::warning(this,tr("提示"),tr("串口没有打开。"));
+            return ;
+        }
         QFile file(ui->lineEdit_FileName->text());
         if(!file.open(QIODevice::ReadOnly))
         {
             QMessageBox::warning(this,tr("提示"),tr("文件打开失败。"));
             return;
         }
+        m_IsSendFile = true;
         m_FileArray = file.readAll();
         file.close();
-        //QtConcurrent::run([this](){
-         //   QTimer timer;
-         //   timer.callOnTimeout(this, [=](){
-                emit signalSerialWrite(m_FileArray,ui->ckBox_HexSend->isChecked(),ui->ckBox_SendEnter->isChecked());
-        //    });
-          //  timer.start(1000);
-       // });
+        QtConcurrent::run([this](){
+            int step = 4096;
+            QList<QByteArray> byteArrayList;
+            QByteArray byteArray;
+            int size = m_FileArray.size();
+            int quotient = size/step;
+            int remainder = size%step;
+            for (int i = 0; i < quotient; ++i) {
+                byteArrayList << m_FileArray.mid(step*i,step);
+            }
+            byteArrayList << m_FileArray.mid(step*quotient,remainder);
+            for (int i = 0; i < quotient; ++i) {
+                if(!m_IsSendFile)
+                {
+                    break;
+                }
+                emit signalSerialWrite(byteArrayList[i],ui->ckBox_HexSend->isChecked(),0);
+                ui->progressBar->setValue(100*i/quotient);
+                QThread::msleep(ui->spin_Cycle->value());
+            }
+            if(m_IsSendFile){
+                emit signalSerialWrite(byteArrayList[quotient],ui->ckBox_HexSend->isChecked(),ui->ckBox_SendEnter->isChecked());
+                ui->progressBar->setValue(100);
+            }
+
+        });
+    });
+    connect(ui->pBn_StopSendFile,&QPushButton::clicked,[=](){
+        bool temp = m_IsSendFile;
+        m_IsSendFile = false;
+        if(temp)
+            QMessageBox::warning(this,tr("提示"),tr("已停止发送文件。"));
     });
 }
 

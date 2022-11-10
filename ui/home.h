@@ -6,6 +6,8 @@
 #define ZCOM_HOME_H
 
 #include <QWidget>
+#include <QMouseEvent>
+#include <QRubberBand>
 #include "singlesend.h"
 #include "multiplesend.h"
 #include "../control/zcontrol.h"
@@ -20,7 +22,10 @@ Q_OBJECT
 protected:
     //! 重写定时器
     void timerEvent(QTimerEvent *event) override;
-
+    //! 重写鼠标事件
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 public:
     explicit Home(QWidget *parent = nullptr);
     ~Home() override;
@@ -56,7 +61,10 @@ private:
     ZControl *mpZControl; //总控界面
     uint64_t m_SendNumber; //发送计数
     uint64_t m_RecNumber; //接收计数
-    QByteArray m_RecShow;
+    QByteArray m_RecShow; //接收展示
+
+    QRubberBand *mpRubberBand;//橡皮筋
+    QPoint m_Start; //橡皮筋起点
 };
 
 

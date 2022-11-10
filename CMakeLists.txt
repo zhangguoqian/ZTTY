@@ -23,7 +23,7 @@ add_executable(ZTTY main.cpp
         control/serialport/zserialport.cpp control/serialport/zserialport.h
         control/zcontrol.cpp control/zcontrol.h
         control/data/zsettings.cpp control/data/zsettings.h
-        ui/home.cpp ui/home.h ui/home.ui)
+        ui/home.cpp ui/home.h ui/home.ui control/data/zpagedata.cpp control/data/zpagedata.h)
 
 target_link_libraries(ZTTY
         Qt5::Core

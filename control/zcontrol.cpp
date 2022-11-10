@@ -26,3 +26,7 @@ ZSerialPort *ZControl::getMpSerialPort() const {
 ZSettings *ZControl::getMpSettings() const {
     return mpSettings;
 }
+
+ZPageData *ZControl::getMpPageData() const {
+    return mpPageData;
+}

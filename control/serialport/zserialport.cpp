@@ -13,6 +13,7 @@ ZSerialPort::ZSerialPort(QObject *parent) :
     m_TimerIdSerialPort = startTimer(1500);
 //    qDebug()<<this->readBufferSize();
     this->setReadBufferSize(256);
+
 }
 
 ZSerialPort::~ZSerialPort() {
@@ -87,6 +88,10 @@ QStringList ZSerialPort::getDataList() const {
 
 bool ZSerialPort::openTty(const QString &tty, int baud,
                           QString stopBit, QString dataBit,QString parityBit) {
+    if(tty.isEmpty())
+    {
+        return false;
+    }
     this->setPortName(tty);
     this->setBaudRate(baud);
     QMetaEnum metaEnum = QMetaEnum::fromType<QSerialPort::StopBits>();
