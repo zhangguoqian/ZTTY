@@ -19,13 +19,9 @@ Q_OBJECT
 
 public:
     explicit SingleSend(QWidget *parent = nullptr);
-
+    virtual ~SingleSend() override;
 protected:
     void timerEvent(QTimerEvent *event) override;
-
-public:
-
-    virtual ~SingleSend() override;
 signals:
     //! 发送数据
     void signalSerialWrite(QByteArray array,bool isHex,bool isEnter);

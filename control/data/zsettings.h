@@ -71,6 +71,18 @@ public:
     int getCurrentPage() const;
     //! 设置多条发送有多少页
     void setCurrentPage(int index);
+    //! 获取发送HEX
+    bool getHexFormalMultipleSend()const;
+    //! 设置发送HEX
+    void setHexFormalMultipleSend(bool checked);
+    //! 获取周期时间
+    int getMultipleCycleValue() const;
+    //! 设置周期时间
+    void setMultipleCycleValue(int value);
+    //! 获取是否发送新行
+    bool getIsMultipleSendEnter() const;
+    //! 设置是否发送新行
+    void setMultipleSendEnter(bool icChecked);
     //! 析构函数
     virtual ~ZSettings();
 };

@@ -328,19 +328,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="7" colspan="3">
-    <widget class="QCheckBox" name="ckBox_NumKey">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>关联数字键盘</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QCheckBox" name="cBox_3">
      <property name="sizePolicy">
@@ -547,12 +534,18 @@
     </widget>
    </item>
    <item row="4" column="8">
-    <widget class="QSpinBox" name="spinBox_2">
+    <widget class="QSpinBox" name="spin_Cycle">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>10000000</number>
      </property>
     </widget>
    </item>

@@ -16,19 +16,15 @@ class ZControl : public QObject{
 public:
     static ZControl *instance();
     virtual ~ZControl();
+
+    ZPageData *getMpPageData() const;
+    ZSettings *getMpSettings() const;
+    ZSerialPort *getMpSerialPort() const;
 private:
     ZControl();
     ZSerialPort *mpSerialPort;
     ZSettings *mpSettings;
     ZPageData *mpPageData;
-public:
-    ZPageData *getMpPageData() const;
-
-public:
-    ZSettings *getMpSettings() const;
-
-public:
-    ZSerialPort *getMpSerialPort() const;
 };
 
 

@@ -4,6 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MultipleSend.h" resolved
 
+#include <QMessageBox>
 #include "multiplesend.h"
 #include "ui_MultipleSend.h"
 
@@ -20,6 +21,10 @@ MultipleSend::MultipleSend(QWidget *parent) :
 
     ui->setupUi(this);
 
+    ui->ckBox_HexSend->setChecked(mpControl->getMpSettings()->getHexFormalMultipleSend());
+    ui->ckBox_SendEnter->setChecked(mpControl->getMpSettings()->getIsMultipleSendEnter());
+    ui->spin_Cycle->setValue(mpControl->getMpSettings()->getMultipleCycleValue());
+
     for (int i = 0; i < 10; ++i) {
         mpCkBoxList<<this->findChild<QCheckBox*>(QString("cBox_%0").arg(i));
 
@@ -29,6 +34,7 @@ MultipleSend::MultipleSend(QWidget *parent) :
     }
     for (int i = 0; i < 10; ++i) {
         mpPbnList<<this->findChild<QPushButton*>(QString("pBn_%0").arg(i));
+        mpPbnList[i]->setText(QString::number(i));
     }
 
     setCurrentPageData();
@@ -40,9 +46,32 @@ MultipleSend::MultipleSend(QWidget *parent) :
     connect(ui->pBn_PrePage,SIGNAL(clicked()),this,SLOT(slotPrePage()));
     connect(ui->pBn_Jump,SIGNAL(clicked()),this,SLOT(slotJumpPage()));
     connect(ui->pBn_DelPage,SIGNAL(clicked()),this,SLOT(slotRemovePage()));
+
+    connect(ui->ckBox_HexSend, SIGNAL(stateChanged(int)),this,SLOT(slotHexSendStateChanged(int)));
 }
 
+void MultipleSend::slotHexSendStateChanged(int state) {
+
+//    Page &page = m_PageDatas[m_CurrentPageIndex];
+//    for (int i = 0; i < 10; ++i) {
+//        switch(state){
+//            case Qt::Unchecked:
+//                mpSendEditList[i]->setText(QString::fromLocal8Bit(page[i].second));
+//                break;
+//            case Qt::Checked:
+//                mpSendEditList[i]->setText(QString::fromLocal8Bit(page[i].second.toHex(' ')));
+//                break;
+//        }
+ //   }
+}
+
+
 MultipleSend::~MultipleSend() {
+    mpControl->getMpSettings()->setHexFormalMultipleSend(ui->ckBox_HexSend->isChecked());
+    mpControl->getMpSettings()->setMultipleSendEnter(ui->ckBox_SendEnter->isChecked());
+    mpControl->getMpSettings()->setMultipleCycleValue(ui->spin_Cycle->value());
+
+
     if(!mpControl->getMpPageData()->savePageData(m_PageDatas,m_CurrentPageIndex)){
         std::remove("data.dat");
     }
@@ -108,7 +137,6 @@ void MultipleSend::slotJumpPage() {
 }
 
 void MultipleSend::setCurrentPageData() {
-
     for (int i = 0; i < 10; ++i) {
         disconnect(mpCkBoxList[i], nullptr, nullptr, nullptr);
         disconnect(mpSendEditList[i], nullptr, nullptr, nullptr);
@@ -120,14 +148,35 @@ void MultipleSend::setCurrentPageData() {
         connect(mpCkBoxList[i], &QCheckBox::clicked, [=,&page](bool checked) {
             page[i].first = checked;
         });
-        connect(mpSendEditList[i], &QLineEdit::textChanged, [=,&page](const QString &text) {
-            page[i].second = text.toLocal8Bit();
-        });
+//        connect(mpSendEditList[i], &QLineEdit::textChanged, [=,&page](const QString &text) {
+//            switch(ui->ckBox_HexSend->checkState()){
+//                case Qt::Unchecked:
+//                    page[i].second = mpSendEditList[i]->text().toLocal8Bit();
+//                    break;
+//                case Qt::Checked:
+//                    page[i].second = QByteArray::fromHex(mpSendEditList[i]->text().toLocal8Bit());
+//                    break;
+//            }
+//        });
         connect(mpPbnList[i], &QPushButton::clicked, [=,&page]() {
+            if(!mpControl->getMpSerialPort()->isOpen()){
+                QMessageBox::warning(this,tr("提示"),tr("串口没有打开。"));
+                return;
+            }
+            QString array = mpSendEditList[i]->text();
+            switch(ui->ckBox_HexSend->checkState()){
+                case Qt::Unchecked:
+                    page[i].second = array.toLocal8Bit();
+                    break;
+                case Qt::Checked:
+                    array = array.remove(QRegExp("\\s"));
+                    qDebug()<<array;
+                    page[i].second = QByteArray::fromHex(array.toLocal8Bit());
+                    break;
+            }
             emit signalMultipleSerialWrite(page[i].second,ui->ckBox_SendEnter->isChecked());
         });
     }
-
 
     for (int i = 0; i < 10; ++i) {
         mpCkBoxList[i]->setChecked(page[i].first);

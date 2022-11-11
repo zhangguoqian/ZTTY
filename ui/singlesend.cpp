@@ -113,7 +113,6 @@ void SingleSend::slotpBnSendClicked() {
         {
             return;
         }
-
         emit signalSerialWrite(m_CurrentArray,ui->ckBox_HexSend->isChecked(),ui->ckBox_SendEnter->isChecked());
     }
 }

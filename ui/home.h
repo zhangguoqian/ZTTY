@@ -46,6 +46,7 @@ private slots:
     void slotSerialRead();
     //! 串口写操作
     void slotSerialWrite(QByteArray array,bool isHex,bool isEnter);
+    void slotSerialWrite(QByteArray array,bool isEnter);
     //! 串口发生错误操作
     void slotSerialError(QSerialPort::SerialPortError error);
     //! 循环获取串口列表

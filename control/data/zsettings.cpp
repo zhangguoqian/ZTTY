@@ -166,3 +166,35 @@ void ZSettings::setCurrentPage(int index) {
     this->setValue("CURRENT",index);
     this->endGroup();
 }
+
+bool ZSettings::getHexFormalMultipleSend() const {
+    return this->value("MULTIPLE/HEX").toBool();
+}
+
+void ZSettings::setHexFormalMultipleSend(bool checked) {
+    this->beginGroup("MULTIPLE");
+    this->setValue("HEX",checked);
+    this->endGroup();
+}
+
+int ZSettings::getMultipleCycleValue() const {
+    int cycle =  this->value("MULTIPLE/CYCLE").toInt();
+    cycle=(0==cycle?1000:cycle);
+    return cycle;
+}
+
+void ZSettings::setMultipleCycleValue(int value) {
+    this->beginGroup("MULTIPLE");
+    this->setValue("CYCLE",value);
+    this->endGroup();
+}
+
+bool ZSettings::getIsMultipleSendEnter() const {
+    return this->value("MULTIPLE/ENTER").toBool();
+}
+
+void ZSettings::setMultipleSendEnter(bool icChecked) {
+    this->beginGroup("MULTIPLE");
+    this->setValue("ENTER",icChecked);
+    this->endGroup();
+}

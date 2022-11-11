@@ -33,7 +33,7 @@ Home::Home(QWidget *parent) : QWidget(parent),
 
     mpMultipleSend = new MultipleSend();
     ui->tabWidget->addTab(mpMultipleSend, tr("多条发送"));
-    //connect(mpMultipleSend,SIGNAL(signalSerialWrite(QByteArray,bool,bool)),this,SLOT(slotSerialWrite(QByteArray, bool,bool)));
+    connect(mpMultipleSend,SIGNAL(signalMultipleSerialWrite(QByteArray, bool)),this,SLOT(slotSerialWrite(QByteArray, bool)));
 
     ui->cbBox_Tty->addItems(mpZControl->getMpSerialPort()->getTtyList());
     connect(ui->cbBox_Tty, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotTtyNameTextChanged(const QString &)));
@@ -108,10 +108,9 @@ void Home::timerEvent(QTimerEvent *event) {
 }
 
 void Home::slotPBnTtySetClicked() {
-
     if(mpZControl->getMpSerialPort()->isOpen()){
         ui->pBn_TtySet->setText(tr("打开串口"));
-        qDebug()<<mpZControl->getMpSerialPort()->isBreakEnabled();
+        mpZControl->getMpSerialPort()->close();
         return;
     }
 
@@ -229,6 +228,25 @@ void Home::slotSerialWrite(QByteArray array,bool isHex,bool isEnter) {
         str = QString::fromLocal8Bit(array.toHex(' '));
     }
 
+
+    str = QString::fromLocal8Bit(byteArray)+str;
+    qint64 size = mpZControl->getMpSerialPort()->write(array);
+    m_SendNumber+=size ;
+    ui->label_SendNumber->setText(tr("发送:%0").arg(m_SendNumber));
+    ui->tEdit_Rec->append(str);
+}
+
+void Home::slotSerialWrite(QByteArray array,bool isEnter) {
+    QByteArray byteArray;
+    ui->tEdit_Rec->setTextColor(QColor(Qt::green));
+    if(ui->ckBox_TimeLine->isChecked())
+    {
+        byteArray.append(QDateTime::currentDateTime().toString("[yyyy/MM/dd hh:mm:ss.zzz]\nRX:").toLocal8Bit());
+    }
+    if(isEnter){
+        array.append("\r\n");
+    }
+    QString str;
 
     str = QString::fromLocal8Bit(byteArray)+str;
     qint64 size = mpZControl->getMpSerialPort()->write(array);
