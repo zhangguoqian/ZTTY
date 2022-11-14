@@ -34,6 +34,8 @@ private slots:
     void slotJumpPage();
     //! 16进制转化
     void slotHexSendStateChanged(int state);
+    //! 循环
+    void slotTimerSendStateChanged(int state);
 private:
     Ui::MultipleSend *ui;
     QVector<QCheckBox*> mpCkBoxList;
@@ -43,7 +45,11 @@ private:
     QVector<Page> m_PageDatas;
     int m_CurrentPageIndex;
     int m_SumPage;
+    int m_TimerCycleSend;
     void setCurrentPageData();
+
+protected:
+    void timerEvent(QTimerEvent *event) override;
 
 
 };
