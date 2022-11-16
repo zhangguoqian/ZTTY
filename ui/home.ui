@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>797</height>
+    <width>890</width>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,14 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="9" colspan="2">
-    <widget class="QComboBox" name="cbBox_Baud"/>
+    <widget class="QComboBox" name="cbBox_Baud">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="8" column="8">
     <widget class="QCheckBox" name="ckBox_HexShow">
@@ -39,13 +46,33 @@
     </widget>
    </item>
    <item row="3" column="9" colspan="2">
-    <widget class="QComboBox" name="cbBox_Stop"/>
+    <widget class="QComboBox" name="cbBox_Stop">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="5" column="9" colspan="2">
-    <widget class="QComboBox" name="cbBox_Parity"/>
+    <widget class="QComboBox" name="cbBox_Parity">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="6" column="9" colspan="2">
     <widget class="QPushButton" name="pBn_TtySet">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>打开串口</string>
      </property>
@@ -73,7 +100,14 @@
     </widget>
    </item>
    <item row="4" column="9" colspan="2">
-    <widget class="QComboBox" name="cbBox_Data"/>
+    <widget class="QComboBox" name="cbBox_Data">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="6" column="8">
     <widget class="QLabel" name="label_TtySet">
@@ -130,9 +164,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="8" colspan="3">
-    <widget class="QComboBox" name="cbBox_Tty"/>
-   </item>
    <item row="3" column="8">
     <widget class="QLabel" name="label_Stop">
      <property name="text">
@@ -150,17 +181,6 @@
      </property>
      <property name="currentIndex">
       <number>-1</number>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="12" colspan="7">
-    <widget class="QTextEdit" name="tEdit_Rec">
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -212,6 +232,12 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="7" column="9" colspan="2">
     <widget class="QPushButton" name="pBn_Clear">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>清除接收</string>
      </property>
@@ -219,8 +245,35 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="7" column="8">
     <widget class="QPushButton" name="pBn_Save">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>保存窗口</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="12" colspan="8">
+    <widget class="QTextEdit" name="tEdit_Rec">
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="8" colspan="3">
+    <widget class="QComboBox" name="cbBox_Tty">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
     </widget>
    </item>

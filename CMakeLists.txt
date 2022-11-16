@@ -17,7 +17,7 @@ find_package(Qt5 COMPONENTS
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
-add_executable(ZTTY main.cpp
+add_executable(ZTTY main.cpp resource/logo.rc
         ui/singlesend.cpp ui/singlesend.h ui/singlesend.ui
         ui/multiplesend.cpp ui/multiplesend.h ui/multiplesend.ui
         control/serialport/zserialport.cpp control/serialport/zserialport.h
